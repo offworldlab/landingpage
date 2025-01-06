@@ -197,12 +197,14 @@
                 </ul>
             </div>
             <div>
-                <form id="signup-form" onsubmit="return handleSignup(event)">
-                    <input type="email" name="email" placeholder="Email" required>
-                    <input type="text" name="name" placeholder="Name">
-                    <button type="submit" class="btn btn-secondary">Subscribe</button>
-                    <div id="signup-success" class="success-message">
+                <form class="ml-subscribe-form">
+                    <div class="ml-form-success" style="display:none;">
                         <h4>Thank you for subscribing!</h4>
+                    </div>
+                    <div class="ml-form-inputs">
+                        <input type="email" class="ml-input" name="fields.email" placeholder="Email" required>
+                        <input type="text" class="ml-input" name="fields.name" placeholder="Name">
+                        <button type="submit" class="btn btn-secondary ml-form-submit">Subscribe</button>
                     </div>
                 </form>
             </div>
@@ -212,14 +214,16 @@
     <section id="contact" class="container">
         <h2 style="text-align: center">Get in touch</h2>
         <div style="max-width: 600px; margin: 0 auto;">
-            <form id="contact-form" onsubmit="return handleContact(event)">
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="text" name="name" placeholder="Name">
-                <textarea name="message" placeholder="Message" style="width: 100%; height: 150px; margin-bottom: 1rem;" required></textarea>
-                <button type="submit" class="btn btn-secondary">Send message</button>
-                <div id="contact-success" class="success-message">
+            <form class="ml-contact-form">
+                <div class="ml-form-success" style="display:none;">
                     <h4>Thank you for getting in touch!</h4>
                     <p>One of our colleagues will get back to you shortly.</p>
+                </div>
+                <div class="ml-form-inputs">
+                    <input type="email" class="ml-input" name="fields.email" placeholder="Email" required>
+                    <input type="text" class="ml-input" name="fields.name" placeholder="Name">
+                    <textarea name="fields.message" class="ml-input" placeholder="Message" style="width: 100%; height: 150px; margin-bottom: 1rem;" required></textarea>
+                    <button type="submit" class="btn btn-secondary ml-form-submit">Send message</button>
                 </div>
             </form>
         </div>
@@ -232,19 +236,89 @@
     </footer>
 
     <script>
-        function handleSignup(event) {
-            event.preventDefault();
-            document.getElementById('signup-success').style.display = 'block';
-            event.target.reset();
-            return false;
-        }
+        window.ml = {};
+        window.ml_webform_success_message = function() {};
 
-        function handleContact(event) {
-            event.preventDefault();
-            document.getElementById('contact-success').style.display = 'block';
-            event.target.reset();
-            return false;
-        }
+        (function() {
+            function init_webforms() {
+                // Handle subscribe form
+                const subscribeForm = document.querySelector('.ml-subscribe-form');
+                if (subscribeForm) {
+                    subscribeForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const formData = new FormData(subscribeForm);
+                        const data = {};
+                        for (let [key, value] of formData.entries()) {
+                            if (key.includes('.')) {
+                                const [obj, field] = key.split('.');
+                                if (!data[obj]) data[obj] = {};
+                                data[obj][field] = value;
+                            } else {
+                                data[key] = value;
+                            }
+                        }
+
+                        fetch('https://preview.mailerlite.io/public/1260771/pages/142666287961605870/subscribe?signature=f63f3ee4be1405225f09e0d4ee1d946575e29fa9f7434268be6cef516b3e412e', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                subscribeForm.querySelector('.ml-form-inputs').style.display = 'none';
+                                subscribeForm.querySelector('.ml-form-success').style.display = 'block';
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                }
+
+                // Handle contact form
+                const contactForm = document.querySelector('.ml-contact-form');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        const formData = new FormData(contactForm);
+                        const data = {};
+                        for (let [key, value] of formData.entries()) {
+                            if (key.includes('.')) {
+                                const [obj, field] = key.split('.');
+                                if (!data[obj]) data[obj] = {};
+                                data[obj][field] = value;
+                            } else {
+                                data[key] = value;
+                            }
+                        }
+
+                        fetch('https://preview.mailerlite.io/public/1260771/pages/142666287961605870/contact?signature=b333e41591c2ea182c8db1388600ce21ed5c27caebe40131589589a39c2f6ef5', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                contactForm.querySelector('.ml-form-inputs').style.display = 'none';
+                                contactForm.querySelector('.ml-form-success').style.display = 'block';
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                    });
+                }
+            }
+
+            // Initialize when document is ready
+            if (document.readyState !== 'loading') {
+                init_webforms();
+            } else {
+                document.addEventListener('DOMContentLoaded', init_webforms);
+            }
+        })();
     </script>
 </body>
 </html>
