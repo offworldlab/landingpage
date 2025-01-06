@@ -70,6 +70,13 @@
             height: auto;
             border-radius: 0.75rem;
         }
+        
+        .feature-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
 
         .btn {
             display: inline-block;
@@ -162,17 +169,17 @@
     <section id="about" class="container">
         <div class="grid grid-3">
             <div>
-                <img src="https://storage.mlcdn.com/account_image/1260771/AakgFV532CqEeRYg4dMGuHHbGJQpXGZKt1vSpH7N.jpg" alt="Hardware setup">
+                <img src="https://storage.mlcdn.com/account_image/1260771/AakgFV532CqEeRYg4dMGuHHbGJQpXGZKt1vSpH7N.jpg" alt="Hardware setup" class="feature-image">
                 <h4>~$200 in Hardware to Setup</h4>
                 <p>Radar nodes consist of: 1) a single board computer w. accessories 2) Two software defined radios 3) Two FM antennas</p>
             </div>
             <div>
-                <img src="https://storage.mlcdn.com/account_image/1260771/HsSgcKcUinO9A0PeVkqSqYpFzDmC5mHJePdGqp61.png" alt="Software interface">
+                <img src="https://storage.mlcdn.com/account_image/1260771/HsSgcKcUinO9A0PeVkqSqYpFzDmC5mHJePdGqp61.png" alt="Software interface" class="feature-image">
                 <h4>Open-source Radar Software</h4>
                 <p>Nodes are preloaded with an OS and <a href="https://github.com/30hours/blah2/blob/main/README.md">open-source radar</a> package to record local objects' range and speed.</p>
             </div>
             <div>
-                <img src="https://storage.mlcdn.com/account_image/1260771/4xOCIyjxAdT9a8pGfz93QAeXpWML7fz9qVDCvdbR.png" alt="Data visualization">
+                <img src="https://storage.mlcdn.com/account_image/1260771/4xOCIyjxAdT9a8pGfz93QAeXpWML7fz9qVDCvdbR.png" alt="Data visualization" class="feature-image">
                 <h4>Servers Map Node Data</h4>
                 <p>Nodes sends data to servers that <a href="https://github.com/30hours/3lips/blob/main/README.md">plot radar tracks</a> onto a global map. Data quality continually improves as overlapping nodes come online.</p>
             </div>
