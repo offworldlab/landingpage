@@ -3145,9 +3145,18 @@
                                         } else {
                                             console.error('Redirect action URL is invalid');
                                         }
-                                    } else if (document.querySelector('.ml-landing-page')) {
-                                        document.querySelector('.ml-landing-page').style.display = 'none';
-                                        document.querySelector('.ml-success-page').style.display = 'block';
+      } else if (document.querySelector('.ml-landing-page')) {
+    document.querySelector('.ml-landing-page').style.display = 'none';
+    document.querySelector('.ml-success-page').style.display = 'block';
+
+    // Add click handlers to nav links to restore landing page
+    document.querySelectorAll('.ml-menu-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            document.querySelector('.ml-landing-page').style.display = 'block';
+            document.querySelector('.ml-success-page').style.display = 'none';
+        });
+    });
+}
 
                                         // Set the scroll position to the top
                                         document.body.scrollTop = 0; // For Safari and older browsers
